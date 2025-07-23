@@ -1,21 +1,22 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import pkg from "../package.json"
-
+import HomePage from "./views/HomePage.vue";
+const heading = "Slider-Peak Graph";
+const description = "Slide to shift the peak position left or right.";
+const graphWidth = "w-xl";
 </script>
 
 <template>
-   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-    <!-- We've used 3xl here, but feel free to try other max-widths based on your needs -->
-    <div class="mx-auto max-w-3xl">
-      <HelloWorld :msg="pkg.name" />
-    </div>
-  </div>
-
+  <HomePage
+    :description="description"
+    :graph-width="graphWidth"
+    :heading="heading"
+    :warning-threshold="12"
+  />
 </template>
 
 <style>
-html, body {
+html,
+body {
   @reference "./style.css";
   @apply bg-slate-50;
 }

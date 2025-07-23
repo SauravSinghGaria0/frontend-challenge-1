@@ -1,48 +1,21 @@
-import { fn } from '@storybook/test';
-import type { Meta, StoryObj } from '@storybook/vue3';
-
-import MyHeader from './Header.vue';
+import Header from "./Header.vue";
+import type { Meta, StoryObj } from "@storybook/vue3";
 
 const meta = {
-  /* 👇 The title prop is optional.
-   * See https://storybook.js.org/docs/configure/#configure-story-loading
-   * to learn how to generate automatic titles
-   */
-  title: 'Example/Header',
-  component: MyHeader,
-  render: (args: any) => ({
-    components: { MyHeader },
-    setup() {
-      return { args };
-    },
-    template: '<my-header :user="args.user" />',
-  }),
-  parameters: {
-    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-    layout: 'fullscreen',
+  component: Header,
+  title: "Components/Header",
+  argTypes: {
+    heading: { control: "text" },
+    description: { control: "text" },
   },
-  args: {
-    onLogin: fn(),
-    onLogout: fn(),
-    onCreateAccount: fn(),
-  },
-  // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/writing-docs/autodocs
-  tags: ['autodocs'],
-} satisfies Meta<typeof MyHeader>;
+} satisfies Meta<typeof Header>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const LoggedIn: Story = {
+export const Default: Story = {
   args: {
-    user: {
-      name: 'Jane Doe',
-    },
-  },
-};
-
-export const LoggedOut: Story = {
-  args: {
-    user: null,
+    heading: "Slider-Peak Graph",
+    description: "Slide to shift the peak position left or right.",
   },
 };

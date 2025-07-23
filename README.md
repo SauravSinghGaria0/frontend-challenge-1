@@ -23,6 +23,12 @@ To start Vite/Vue, run the following command:
 npm run dev
 ```
 
+To start Vitest Test , run following command:
+
+```bash
+npm run test
+```
+
 ## Requirements
 
 ### 1. Component Development
