@@ -10,7 +10,7 @@ const graphWidth = "w-xl";
     :description="description"
     :graph-width="graphWidth"
     :heading="heading"
-    :warning-threshold="12"
+    :warning-threshold="10"
   />
 </template>
 
