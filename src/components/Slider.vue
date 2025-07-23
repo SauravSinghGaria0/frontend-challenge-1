@@ -94,7 +94,7 @@ const drawGraph = (
   //Quadratic arch parameters
   // Peak is at 10% of the height, base is at 85% of the height
   // Peak X is calculated based on the peak percent
-  const peakX = (peakPercent / 100) * width;
+  const peakX = (peakPercent / 100) * (width - 20); // 20px padding on both sides
   const peakY = height * 0.1; // top peak
   const baseY = height * 0.85; // bottom ends
 
