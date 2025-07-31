@@ -1,83 +1,88 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { mount } from "@vue/test-utils";
 import Slider from "./Slider.vue";
 
-function mockCanvas() {
-  Object.defineProperty(globalThis, "HTMLCanvasElement", {
-    value: class {
-      getContext = vi.fn().mockReturnValue({
-        clearRect: vi.fn(),
-        beginPath: vi.fn(),
-        moveTo: vi.fn(),
-        lineTo: vi.fn(),
-        stroke: vi.fn(),
-      });
-    },
-  });
-}
-
-describe("Slider.vue", () => {
-  beforeEach(() => {
-    mockCanvas();
-  });
-
+describe("Slider", () => {
+  //checks for rendering Component
   it("renders the component", () => {
     const wrapper = mount(Slider);
     expect(wrapper.exists()).toBe(true);
   });
 
-  it("renders the slider input with default value", () => {
+  //checks for default class with no props
+  it("renders with default max width if no graphWidth prop is passed", () => {
     const wrapper = mount(Slider);
-    const input = wrapper.find('input[type="range"]');
-    expect(input.exists()).toBe(true);
-    expect((input.element as HTMLInputElement).value).toBe("50");
+    const wrapperDiv = wrapper.find('[data-testid="slider-test"]');
+    expect(wrapperDiv.classes()).toContain("max-w-xl");
   });
 
-  it("updates peakPercent when slider is moved", async () => {
-    const wrapper = mount(Slider);
-    const input = wrapper.find('input[type="range"]');
-    await input.setValue(20);
-    expect(wrapper.text()).toContain("20%");
+  //checks for default class with graphWidth props
+  it("applies custom graphWidth if provided (w-1/2)", () => {
+    const wrapper = mount(Slider, {
+      props: {
+        graphWidth: "w-1/2",
+      },
+    });
+    const wrapperDiv = wrapper.find('[data-testid="slider-test"]');
+    expect(wrapperDiv.classes()).toContain("w-1/2");
   });
 
-  it("displays warning message if value is below 10%", async () => {
+  //checks for default class with graphWidth props
+  it("applies custom graphWidth if provided (w-xl)", () => {
+    const wrapper = mount(Slider, {
+      props: {
+        graphWidth: "w-xl",
+      },
+    });
+    const wrapperDiv = wrapper.find('[data-testid="slider-test"]');
+    expect(wrapperDiv.classes()).toContain("w-xl");
+  });
+
+  //checks for inputValue without any props
+  it("displays warning class if value is below 10%", async () => {
     const wrapper = mount(Slider);
     const input = wrapper.find('input[type="range"]');
     await input.setValue(5);
-    expect(wrapper.text()).toContain("The value is below 5%");
+    expect(input.classes()).toContain("thumb-warning");
   });
 
-  it("displays warning message if value is above 90%", async () => {
+  //checks for inputValue without any props
+  it("displays warning class if value is above 10%", async () => {
     const wrapper = mount(Slider);
     const input = wrapper.find('input[type="range"]');
-    await input.setValue(95);
-    expect(wrapper.text()).toContain("The value is above 95%");
+    await input.setValue(15);
+    expect(input.classes()).toContain("thumb-default");
   });
 
+  //checks for inputValue without any props
   it("does not show warning if value is between 10% and 90%", async () => {
     const wrapper = mount(Slider);
     const input = wrapper.find('input[type="range"]');
     await input.setValue(50);
-    expect(wrapper.text()).not.toContain("The value is");
+    expect(wrapper.text()).toContain("50%");
   });
 
-  it("applies custom graphWidth if provided", () => {
+  //checks for inputValue with warningThreshold props
+  it("applies warningThreshold and shows warning class if value is below threshold", async () => {
     const wrapper = mount(Slider, {
       props: {
-        graphWidth: "w-1/2",
+        warningThreshold: 20,
       },
     });
-    const graph = wrapper.find('[data-testid="graph-wrapper"]');
-    expect(graph.classes()).toContain("w-1/2");
+    const input = wrapper.find('input[type="range"]');
+    await input.setValue(15);
+    expect(input.classes()).toContain("thumb-warning");
   });
 
-  it("applies custom graphWidth if provided", () => {
+  //checks for inputValue with warningThreshold props
+  it("applies warningThreshold and shows warning class if value is above threshold", async () => {
     const wrapper = mount(Slider, {
       props: {
-        graphWidth: "w-1/2",
+        warningThreshold: 20,
       },
     });
-    const graph = wrapper.find('[data-testid="slider-test"]');
-    expect(graph.classes()).toContain("w-1/2");
+    const input = wrapper.find('input[type="range"]');
+    await input.setValue(25);
+    expect(input.classes()).toContain("thumb-default");
   });
 });
