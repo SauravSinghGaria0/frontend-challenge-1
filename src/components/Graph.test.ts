@@ -3,11 +3,13 @@ import { describe, it, expect } from "vitest";
 import Graph from "./Graph.vue";
 
 describe("Graph", () => {
+  //check if the component renders correctly with no props
   it("renders with default max width if no graphWidth prop is passed", () => {
     const wrapper = mount(Graph);
     expect(wrapper.classes()).toContain("max-w-xl");
   });
 
+  // check if the component applies the correct class based on the graphWidth prop
   it("applies the custom graphWidth class when provided", () => {
     const wrapper = mount(Graph, {
       props: {
@@ -17,12 +19,14 @@ describe("Graph", () => {
     expect(wrapper.classes()).toContain("max-w-3xl");
   });
 
+  // check if the component renders the canvas and wrapper elements
   it("renders canvas and wrapper elements", () => {
     const wrapper = mount(Graph);
     expect(wrapper.find("canvas").exists()).toBe(true);
     expect(wrapper.find('[data-testid="graph-wrapper"]').exists()).toBe(true);
   });
 
+  // check if the component displays the warning message when peakPercent is below the threshold
   it("shows warning message when peakPercent < warningThreshold", async () => {
     const wrapper = mount(Graph, {
       props: {
@@ -39,6 +43,7 @@ describe("Graph", () => {
     expect(warning.text()).toContain("below 10%");
   });
 
+  // check if the component does not show the warning message when peakPercent is above the threshold
   it("does not show warning message when peakPercent >= warningThreshold", async () => {
     const wrapper = mount(Graph, {
       props: {
@@ -53,6 +58,7 @@ describe("Graph", () => {
     expect(warning.exists()).toBe(false);
   });
 
+  // check if the component updates the graph when sliderValue changes
   it("updates graph when sliderValue changes", async () => {
     const wrapper = mount(Graph, {
       props: {

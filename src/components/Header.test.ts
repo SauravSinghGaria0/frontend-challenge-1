@@ -3,6 +3,13 @@ import { mount } from "@vue/test-utils";
 import Header from "./Header.vue";
 
 describe("Header", () => {
+  //checks for rendering Component
+  it("renders the component", () => {
+    const wrapper = mount(Header);
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  //checks for heading and description props
   it("renders heading and description correctly", () => {
     const heading = "Hello World";
     const description = "This is a test description.";

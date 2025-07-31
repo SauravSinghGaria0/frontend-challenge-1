@@ -85,4 +85,13 @@ describe("Slider", () => {
     await input.setValue(25);
     expect(input.classes()).toContain("thumb-default");
   });
+
+  //checks if emits input event with correct value
+  it("emits input event with correct value when slider is moved", async () => {
+    const wrapper = mount(Slider);
+    const input = wrapper.find('input[type="range"]');
+    await input.setValue(30);
+    expect(wrapper.emitted("update:sliderValue")).toBeTruthy();
+    expect(wrapper.emitted("update:sliderValue")![0]).toEqual([30]);
+  });
 });
